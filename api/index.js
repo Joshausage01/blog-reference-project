@@ -21,7 +21,7 @@ app.use('/uploads', express.static(__dirname + '/uploads')); // Endpoint that ac
 
 mongoose.connect('mongodb+srv://blog:O6tuDhCaog5B8pTh@cluster0.xsneg.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0');
 
-app.post('/register', async (req, res) => { 
+app.post('/register', async (req, res) => {
   const {username, password} = req.body;
   try {
     const userDoc = await User.create({
@@ -51,6 +51,12 @@ app.post('/login', async (req, res) => {
   } else {
     res.status(400).json('Wrong credentials');
   }
+});
+
+// Logout endpoint
+app.post('/logout', (req, res) => {
+  res.clearCookie('token'); // Clear the JWT token cookie
+  res.json({ message: 'Logged out successfully' }); // Send a success response
 });
 
 // Confirm if the user is logged in (with usage of cookies)
@@ -125,7 +131,35 @@ app.put('/post', uploadMiddleware.single('file'), async (req, res) => {
   });
 });
 
-console.log('hehe');
+// Deleting the post
+app.delete('/post/:id', async (req, res) => {
+  const { token } = req.cookies;
+  const { id } = req.params;
+
+  if (!token) {
+    return res.status(401).json({ error: 'No token provided' });
+  }
+
+  jwt.verify(token, secret, {}, async (err, info) => {
+    if (err) {
+      console.error('Token verification failed:', err.message);
+      return res.status(401).json({ error: 'Invalid or expired token' });
+    }
+
+    const postDoc = await Post.findById(id);
+    if (!postDoc) {
+      return res.status(404).json({ error: 'Post not found' });
+    }
+
+    const isAuthor = JSON.stringify(postDoc.author) === JSON.stringify(info.id);
+    if (!isAuthor) {
+      return res.status(403).json({ error: 'Unauthorized action' });
+    }
+
+    await postDoc.deleteOne();
+    res.json({ message: 'Post deleted successfully' });
+  });
+});
 
 // Formatting the post
 app.get('/post', async (req, res) => {
@@ -146,6 +180,7 @@ app.get('/post/:id', async (req, res) => {
 const PORT = 4000; // or any other available port
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
+  console.log('Run successful...')
 });
 //username: blog
 //Password: O6tuDhCaog5B8pTh

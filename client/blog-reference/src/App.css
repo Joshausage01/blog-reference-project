@@ -92,6 +92,44 @@ div.post p.summmary{
   line-height: 1.4rem;
 }
 
+div.no-post {
+  text-align: center;
+  margin-top:  50px;
+  font-family: Arial, sans-serif;
+  color: #333;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  margin: 50px auto;
+}
+
+div.no-post-head h1.no-post-h{
+  font-size: 2.3rem;
+  color: #807f7f;
+  margin: 0;
+}
+
+div.no-post-head{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+div.no-post-head img.face-confused{
+  height: 45px;
+  width: 45px;  
+}
+
+div.no-post p.no-post-msg{
+  font-size: 16px;
+  margin-top: 20px;
+  color: #666;
+}
+
 form.login, form.register{
   max-width: 400px;
   margin: 0 auto;

@@ -24,7 +24,7 @@ function PostPage() {
   return(
     <div className="post-page">
       <h1>{postInfo.title}</h1>
-      <time>{format(new Date(createdAt), 'MMM d, yyyy h:m a')} PHT</time>
+      <time>{format(new Date(createdAt), 'MMM d, yyyy h:mm a')} PHT</time>
       <div className="author" >by: @{postInfo.author.username}</div>
       {/* Creates the edit button if the user is the author of the post. */}
       {userInfo.id === postInfo.author._id && (

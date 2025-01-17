@@ -28,7 +28,7 @@ function HomePage(){
             <img src={confusedFace} className="face-confused" alt="sad-face" />
             <h1 className="no-post-h">No posts available!</h1>
           </div>
-          <p className="no-post-msg">Be the first to share your thoughts. Register now and create a blog post today!</p>
+          <p className="no-post-msg">Be the first to share your thoughts. Register now and create your own blog post today!</p>
         </div>
       )}
     </>

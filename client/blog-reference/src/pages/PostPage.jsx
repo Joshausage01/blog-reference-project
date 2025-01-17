@@ -4,7 +4,7 @@ import { Link, useParams } from "react-router-dom";
 import { UserContext } from "../UserContext";
 
 function PostPage() {
-  const [postInfo, setPostInfo] = useState('');
+  const [postInfo, setPostInfo] = useState(null);
   const {userInfo} = useContext(UserContext);
   const {id} = useParams();
   // Grabs the specific informations for a single post
@@ -21,6 +21,29 @@ function PostPage() {
   // Check if createdAt exists in the response.
   const {createdAt} = postInfo;
 
+  // Delete post function
+  async function handleDeletePost(postId) {
+    const confirmDelete = window.confirm("Are you sure to you want to delete this post?");
+    if (confirmDelete) {
+      try {
+        const response = await fetch(`http://localhost:4000/post/${postId}`, {
+          method: 'DELETE',
+          credentials: 'include', // Include cookies
+        });
+
+        if (response.ok) {
+          alert("Post deleted successfully");
+          window.location.href = "/"; // Redirect to the home page
+        } else {
+          alert("Failed to delete the post");
+        }
+      } catch (error) {
+        console.error("Error deleting the post:", error);
+        alert("An error occurred. Please try again later.");
+      }
+    }
+  }
+
   return(
     <div className="post-page">
       <h1>{postInfo.title}</h1>
@@ -36,6 +59,12 @@ function PostPage() {
             </svg>
             Edit post
           </Link>
+
+          {/* Deletes the post if the user is the author of the post. */}
+          <button
+            className="delete-btn"
+            onClick={() => handleDeletePost(postInfo._id)}
+          > Delete post</button>
         </div>
       )}
       <div className="image">

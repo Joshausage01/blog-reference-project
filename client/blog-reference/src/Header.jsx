@@ -26,17 +26,19 @@ function Header() {
 
   return(
     <header>
-        <Link to="/" className="logo">MyBlog</Link>
+        <Link to="/" className="logo">BAYAN-Blogs</Link>
         <nav>
           {/* This block code is representing an if-else statement*/}
           {username && (
             <>
+              {/* If the user is logged in, display the username and logout button */}
               <Link to="/create">Create new post</Link>
               <a className="logout" onClick={logout}>Logout</a>
             </>
           )}
           {!username && (
             <>
+            {/* If the user is not logged in, display the login and register buttons */}
               <Link to="/login">Login</Link>
               <Link to="/register">Register</Link>
             </>

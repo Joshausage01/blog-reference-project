@@ -3,6 +3,7 @@ const cors = require('cors');  // Module import: Importing the CORS (Cross-Origi
 const { default: mongoose } = require('mongoose');  // ODM (Object Data Modeling): For working with MongoDB in a structured way.
 const User = require('./models/User');  // Importing the User model for database operations.
 const Post = require('./models/Post');  // Importing the Post model for handling blog posts.
+const path = require('path');  // Module import: Importing the path module for working with file paths
 const bcrypt = require('bcryptjs');     // Module import: Importing the bcrypt library for password hashing and verification, for hashing passwords to ensure secure storage.
 const app = express();                  // Application instance: Initializing an Express application.
 const jwt = require('jsonwebtoken');  // Authentication: For generating and verifying JSON Web Tokens.
@@ -19,6 +20,12 @@ app.use(cors({credentials: true, origin: 'http://localhost:5173'}));  // Middlew
 app.use(express.json());  // Middleware: Parses incoming JSON request bodies.
 app.use(cookieParser());  // Middleware: Parses cookies for incoming requests.
 app.use('/uploads', express.static(__dirname + '/uploads'));  // Static files: Serves uploaded files as static resources. Endpoint that access the images used.
+
+app.use(express.static(path.join(__dirname, "dist")));  // Static files: Serves the built frontend application as static resources.
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "dist", "index.html"));
+});
 
 mongoose.connect('mongodb+srv://blog:O6tuDhCaog5B8pTh@cluster0.xsneg.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0');  // Database connection: Connects to a MongoDB database using Mongoose.
 

@@ -10,6 +10,7 @@ function EditPost() {
   const [files, setFiles] = useState('');
   const [redirect, setRedirect] = useState(false);
   
+  // Fetch post data from API
   useEffect(() => {
     fetch('http://localhost:4000/post/'+id)
       .then(response => {
@@ -22,9 +23,10 @@ function EditPost() {
       });
   }, []);
 
+  // Handle form submission
   async function updatePost(ev) {
-    ev.preventDefault(); 
-    const data = new FormData();
+    ev.preventDefault();  
+    const data = new FormData();  // Create a new FormData object
     data.set('title', title);
     data.set('summary', summary);
     data.set('content', content);
@@ -34,19 +36,20 @@ function EditPost() {
       data.set('file', files[0]);
     }
 
+    // Send the form data to the server
     const response = await fetch('http://localhost:4000/post', {
       method: 'PUT',
       body: data,
       credentials: 'include',
     });
     if (response.ok) {
-      setRedirect(true);
+      setRedirect(true);  // set the value of redirect to true
     }
   }
 
   // If redirect is true, return to homepage
   if (redirect) {
-    return <Navigate to={'/post/'+id}/>
+    return <Navigate to={'/post/'+id}/>  // Redirect to the post page
   }
 
   return(

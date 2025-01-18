@@ -5,11 +5,11 @@ import confusedFace from '../assets/face-confused.svg';
 function HomePage(){
   const [posts, setPosts] = useState([]);
 
-  // This will run when the component is mounted
+  // This will run when the component is mounted, and every time the component is updated
   useEffect(() => { 
     fetch('http://localhost:4000/post').then(response => {
       response.json().then(posts => {
-        setPosts(posts);
+        setPosts(posts); // Update state with posts
       });
     });
   }, []);

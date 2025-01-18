@@ -12,19 +12,20 @@ function LoginPage(){
     ev.preventDefault();
     const response = await fetch('http://localhost:4000/login', {
       method: 'POST',
-      body: JSON.stringify({username, password}),
-      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({username, password}),  // <--- pass the data as JSON and in string.
+      headers: {'Content-Type': 'application/json'},  // <--- specify the content type as JSON
       credentials: 'include', // Considers cookies as credentials
     });
+
     // Automate the navigation bar
     if (response.ok) {
       response.json().then(userInfo => {
-        setUserInfo(userInfo);
+        setUserInfo(userInfo);  // <--- update the user info in the context
         setRedirect(true);
       });
     } else {
-      const errorData = await response.json(); // Parse error response
-      alert(`Login failed. ${errorData.error}`) // Show error message
+      const errorData = await response.json();   // Parse error response
+      alert(`Login failed. ${errorData.error}`);  // Show error message
     }
   }
 

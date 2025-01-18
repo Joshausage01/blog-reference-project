@@ -4,20 +4,21 @@ import { Link, useParams } from "react-router-dom";
 import { UserContext } from "../UserContext";
 
 function PostPage() {
-  const [postInfo, setPostInfo] = useState(null);
-  const {userInfo} = useContext(UserContext);
-  const {id} = useParams();
-  // Grabs the specific informations for a single post
+  const [postInfo, setPostInfo] = useState(null);  // State for storing post information
+  const {userInfo} = useContext(UserContext);   // Access the user information from the UserContext
+  const {id} = useParams();   // Get the post ID from the URL parameters
+
+  // Get the post ID from the URL parameters
   useEffect(() => {
     fetch(`http://localhost:4000/post/${id}`)
     .then(response => {
       response.json().then(postInfo => {
-        setPostInfo(postInfo);
+        setPostInfo(postInfo);  // Store the retrieved post data in state
       });
     });
   }, []);
 
-  if (!postInfo) return '';
+  if (!postInfo) return '';   // Return nothing if postInfo is not yet loaded
   // Check if createdAt exists in the response.
   const {createdAt} = postInfo;
 
@@ -27,13 +28,13 @@ function PostPage() {
     if (confirmDelete) {
       try {
         const response = await fetch(`http://localhost:4000/post/${postId}`, {
-          method: 'DELETE',
-          credentials: 'include', // Include cookies
+          method: 'DELETE',  // HTTP DELETE request
+          credentials: 'include', // Include cookies for authentication
         });
 
         if (response.ok) {
           alert("Post deleted successfully");
-          window.location.href = "/"; // Redirect to the home page
+          window.location.href = "/";  // Redirect to the home page
         } else {
           alert("Failed to delete the post");
         }

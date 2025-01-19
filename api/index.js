@@ -1,6 +1,8 @@
+require("dotenv").config();
+
 const express = require('express');  // Module import: Importing the Express framework for building web applications.
 const cors = require('cors');  // Module import: Importing the CORS (Cross-Origin Resource Sharing) middleware for handling cross-origin, allows cross-origin requests to the server.
-const { default: mongoose } = require('mongoose');  // ODM (Object Data Modeling): For working with MongoDB in a structured way.
+const mongoose = require("mongoose");  // ODM (Object Data Modeling): For working with MongoDB in a structured way.
 const User = require('./models/User');  // Importing the User model for database operations.
 const Post = require('./models/Post');  // Importing the Post model for handling blog posts.
 const bcrypt = require('bcryptjs');     // Module import: Importing the bcrypt library for password hashing and verification, for hashing passwords to ensure secure storage.
@@ -13,14 +15,32 @@ const uploadMiddleware = multer({ dest: 'uploads/' });  // Configuration: Specif
 const fs = require('fs');    // File system module: To handle file operations (e.g., renaming uploaded files).
 
 const salt = bcrypt.genSaltSync(10); // To hash or encrypt a password
-const secret = '123b4kjbj2b3jbk12kj3bbk4jbb21k3jb4l12nn34'; // Secret key: Used to sign and verify JWTs (should ideally be stored securely). [The content of this variables are just random shits just for json webtoken]
+const secret = process.env.JWT_SECRET; // Secret key: Used to sign and verify JWTs (should ideally be stored securely). [The content of this variables are just random shits just for json webtoken]
+const mongoUri = process.env.MONGO_URI;
+const port = process.env.PORT || 4000;
+const corsOrigin = process.env.CORS_ORIGIN;
 
-app.use(cors({credentials: true, origin: 'http://localhost:5173'}));  // Middleware: Configures CORS to allow credentials and specific origin.
+app.use(cors({credentials: true, origin: corsOrigin}));  // Middleware: Configures CORS to allow credentials and specific origin.
 app.use(express.json());  // Middleware: Parses incoming JSON request bodies.
 app.use(cookieParser());  // Middleware: Parses cookies for incoming requests.
 app.use('/uploads', express.static(__dirname + '/uploads'));  // Static files: Serves uploaded files as static resources. Endpoint that access the images used.
 
-mongoose.connect('mongodb+srv://blog:O6tuDhCaog5B8pTh@cluster0.xsneg.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0');  // Database connection: Connects to a MongoDB database using Mongoose.
+const connectDB = async () => {
+  try {
+    await mongoose.connect(process.env.MONGO_URI); // Updated to omit deprecated options
+    console.log("MongoDB connected successfully");
+  } catch (error) {
+    console.error("Error connecting to MongoDB:", error.message);
+    console.log('Mongo DB:', process.env.MONGO_URI);
+    process.exit(1); // Exit process with failure
+  }
+};
+
+connectDB();
+
+// Example usage of the variable:
+const portLink = process.env.PORT_LINK;
+console.log('API Base URL:', portLink);
 
 // Route handler: Defines the endpoint for user registration.
 app.post('/register', async (req, res) => {
@@ -189,12 +209,9 @@ app.get('/post/:id', async (req, res) => {
   res.json(postDoc);   // Send the post details as a response
 });
 
-// Define the server's port
-const PORT = 4000;   // Use port 4000 or any other available port
-
 // Start the server and listen for incoming requests
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+app.listen(port, () => {
+  console.log(`Server is running on http://localhost:${port}`);
   console.log('Run successful...')
 });
 

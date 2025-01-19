@@ -7,10 +7,11 @@ function PostPage() {
   const [postInfo, setPostInfo] = useState(null);  // State for storing post information
   const {userInfo} = useContext(UserContext);   // Access the user information from the UserContext
   const {id} = useParams();   // Get the post ID from the URL parameters
+  const apiPortLink = import.meta.env.VITE_APP_PORT_LINK;
 
   // Get the post ID from the URL parameters
   useEffect(() => {
-    fetch(`http://localhost:4000/post/${id}`)
+    fetch(`${apiPortLink}/post/${id}`)
     .then(response => {
       response.json().then(postInfo => {
         setPostInfo(postInfo);  // Store the retrieved post data in state
@@ -27,7 +28,7 @@ function PostPage() {
     const confirmDelete = window.confirm("Are you sure to you want to delete this post?");
     if (confirmDelete) {
       try {
-        const response = await fetch(`http://localhost:4000/post/${postId}`, {
+        const response = await fetch(`${apiPortLink}/post/${postId}`, {
           method: 'DELETE',  // HTTP DELETE request
           credentials: 'include', // Include cookies for authentication
         });

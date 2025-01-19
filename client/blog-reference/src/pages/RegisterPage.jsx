@@ -3,10 +3,11 @@ import { useState } from "react";
 function RegisterPage(){
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const apiPortLink = import.meta.env.VITE_APP_PORT_LINK;
 
   async function register(ev){
     ev.preventDefault();
-    const response = await fetch('http://localhost:4000/register', {
+    const response = await fetch(`${apiPortLink}/register`, {
       method: 'POST',
       body: JSON.stringify({username, password}),
       headers: {'Content-type':'application/json'},

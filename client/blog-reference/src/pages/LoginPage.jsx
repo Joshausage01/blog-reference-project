@@ -7,10 +7,11 @@ function LoginPage(){
   const [password, setPassword] = useState('');
   const [redirect, setRedirect] = useState(false);
   const {setUserInfo} = useContext(UserContext);
+  const apiPortLink = import.meta.env.VITE_APP_PORT_LINK;
 
   async function login(ev) {
     ev.preventDefault();
-    const response = await fetch('http://localhost:4000/login', {
+    const response = await fetch(`${apiPortLink}/login`, {
       method: 'POST',
       body: JSON.stringify({username, password}),  // <--- pass the data as JSON and in string.
       headers: {'Content-Type': 'application/json'},  // <--- specify the content type as JSON
@@ -22,6 +23,7 @@ function LoginPage(){
       response.json().then(userInfo => {
         setUserInfo(userInfo);  // <--- update the user info in the context
         setRedirect(true);
+        alert('Login successful');
       });
     } else {
       const errorData = await response.json();   // Parse error response

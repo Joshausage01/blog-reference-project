@@ -4,10 +4,11 @@ import confusedFace from '../assets/face-confused.svg';
 
 function HomePage(){
   const [posts, setPosts] = useState([]);
+  const apiPortLink = import.meta.env.VITE_APP_PORT_LINK;
 
   // This will run when the component is mounted, and every time the component is updated
   useEffect(() => { 
-    fetch('http://localhost:4000/post').then(response => {
+    fetch(`${apiPortLink}/post`).then(response => {
       response.json().then(posts => {
         setPosts(posts); // Update state with posts
       });

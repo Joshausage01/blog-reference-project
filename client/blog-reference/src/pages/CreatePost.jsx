@@ -17,7 +17,9 @@ function CreatePost() {
     data.set('summary', summary);
     data.set('content', content);
     data.set('file', files[0]);
-    const response = await fetch ('http://localhost:4000/post', {
+
+    const apiPortLink = import.meta.env.VITE_APP_PORT_LINK;
+    const response = await fetch (`${apiPortLink}/post`, {
       method: 'POST',
       body: data,
       credentials: 'include',

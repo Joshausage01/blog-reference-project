@@ -4,8 +4,10 @@ import { UserContext } from "./UserContext";
 
 function Header() {
   const {setUserInfo, userInfo} = useContext(UserContext);
+  const apiPortLink = import.meta.env.VITE_APP_PORT_LINK;
+
   useEffect(() => {
-    fetch('http://localhost:4000/profile', {
+    fetch(`${apiPortLink}/profile`, {
       credentials: 'include',
     }).then(response => {
       response.json().then(userInfo => {
@@ -15,7 +17,7 @@ function Header() {
   }, []);
 
   function logout() {
-    fetch('http://localhost:4000/logout', {
+    fetch(`${apiPortLink}/logout`, {
       credentials: 'include',
       method: 'POST', 
     });

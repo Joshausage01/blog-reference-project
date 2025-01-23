@@ -18,24 +18,10 @@ const salt = bcrypt.genSaltSync(10); // To hash or encrypt a password
 const secret = process.env.JWT_SECRET; // Secret key: Used to sign and verify JWTs (should ideally be stored securely). [The content of this variables are just random shits just for json webtoken]
 const mongoUri = process.env.MONGO_URI;
 const port = process.env.PORT || 4000;
-const allowedOrigins = [
-  'https://blog-web-application.azurewebsites.net/',
-  'http://localhost:5173', // Add localhost for testing
-];
+const corsOrigin = process.env.CORS_ORIGIN;
+const corsDefaultDomain = process.env.DEFAULT_DOMAIN;
 
-app.use(
-  cors({
-    credentials: true,
-    origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error('Not allowed by CORS'));
-      }
-    },
-  })
-);
-;  // Middleware: Configures CORS to allow credentials and specific origin.
+app.use(cors({credentials: true, origin: corsOrigin && corsDefaultDomain}));  // Middleware: Configures CORS to allow credentials and specific origin.
 app.use(express.json());  // Middleware: Parses incoming JSON request bodies.
 app.use(cookieParser());  // Middleware: Parses cookies for incoming requests.
 app.use('/uploads', express.static(__dirname + '/uploads'));  // Static files: Serves uploaded files as static resources. Endpoint that access the images used.

@@ -8,11 +8,11 @@ const Post = require('./models/Post');  // Importing the Post model for handling
 const bcrypt = require('bcryptjs');     // Module import: Importing the bcrypt library for password hashing and verification, for hashing passwords to ensure secure storage.
 const app = express();                  // Application instance: Initializing an Express application.
 const jwt = require('jsonwebtoken');  // Authentication: For generating and verifying JSON Web Tokens.
-
 const cookieParser = require('cookie-parser');  // Middleware: To parse cookies from incoming requests.
 const multer = require('multer');     // File upload handling: Middleware for handling multipart/form-data (used for file uploads).
 const uploadMiddleware = multer({ dest: 'uploads/' });  // Configuration: Specifies the directory to store uploaded files temporarily.
 const fs = require('fs');    // File system module: To handle file operations (e.g., renaming uploaded files).
+const pathBuild = require("path");
 
 const salt = bcrypt.genSaltSync(10); // To hash or encrypt a password
 const secret = process.env.JWT_SECRET; // Secret key: Used to sign and verify JWTs (should ideally be stored securely). [The content of this variables are just random shits just for json webtoken]
@@ -20,7 +20,7 @@ const mongoUri = process.env.MONGO_URI;
 const port = process.env.PORT || 4000;
 const corsOrigin = process.env.CORS_ORIGIN;
 
-app.use(cors({credentials: true, origin: corsOrigin}));  // Middleware: Configures CORS to allow credentials and specific origin.
+app.use(cors({credentials: true, origin: corsOrigin || '*'}));  // Middleware: Configures CORS to allow credentials and specific origin.
 app.use(express.json());  // Middleware: Parses incoming JSON request bodies.
 app.use(cookieParser());  // Middleware: Parses cookies for incoming requests.
 app.use('/uploads', express.static(__dirname + '/uploads'));  // Static files: Serves uploaded files as static resources. Endpoint that access the images used.
@@ -42,6 +42,7 @@ connectDB();
 const portLink = process.env.PORT_LINK;
 console.log('API Base URL:', portLink);
 
+
 // Route handler: Defines the endpoint for user registration.
 app.post('/register', async (req, res) => {
   const {username, password} = req.body;  
@@ -61,23 +62,36 @@ app.post('/register', async (req, res) => {
 
 // Route handler: Defines the endpoint for user login.
 app.post('/login', async (req, res) => {
-  const {username, password} = req.body;
-  const userDoc = await User.findOne({username})  // Database query: Finds a user by username.
-  const passwordOk = bcrypt.compareSync(password, userDoc.password);  // Password validation: Compares input password with hashed password in DB. To compare password from database.
-  if (passwordOk) {
-    // If logged in, respond with JSON webtoken
-    jwt.sign({username, id:userDoc._id}, secret, {}, (err, token) => {
-      // JWT generation: Signs a JWT with user info.
-      if (err) throw err;
-      res.cookie('token', token).json({
-        id: userDoc._id,
-        username,
-      }); // Cookie handling: Sends the token as a cookie.
-    });
-  } else {
-    res.status(400).json('Wrong credentials');   // Error response: Indicates invalid login credentials.
+  const { username, password } = req.body;
+  
+  try {
+    const userDoc = await User.findOne({ username }); // Database query: Finds a user by username.
+    
+    if (!userDoc) {
+      // If user is not found, send an appropriate response.
+      return res.status(400).json({ error: 'User not found' });
+    }
+
+    const passwordOk = bcrypt.compareSync(password, userDoc.password); // Password validation: Compares input password with hashed password in DB.
+    
+    if (passwordOk) {
+      // If logged in, respond with JSON web token.
+      jwt.sign({ username, id: userDoc._id }, secret, {}, (err, token) => {
+        if (err) throw err; // JWT generation: Signs a JWT with user info.
+        res.cookie('token', token).json({
+          id: userDoc._id,
+          username,
+        }); // Cookie handling: Sends the token as a cookie.
+      });
+    } else {
+      res.status(400).json({ error: 'Wrong credentials' }); // Error response: Indicates invalid login credentials.
+    }
+  } catch (err) {
+    console.error('Login error:', err.message);
+    res.status(500).json({ error: 'Internal server error' });
   }
 });
+
 
 // Route handler: Defines the endpoint for logging out.
 app.post('/logout', (req, res) => {
@@ -207,6 +221,14 @@ app.get('/post/:id', async (req, res) => {
   const {id} = req.params;
   const postDoc = await Post.findById(id).populate('author', ['username']);   // Retrieve the post and include the author's username
   res.json(postDoc);   // Send the post details as a response
+});
+
+// Serve static files from the 'dist' directory
+app.use(express.static(pathBuild.join(__dirname, "dist")));
+
+// Catch-all route to serve React's index.html for any unmatched routes
+app.get("/*", (req, res) => {
+  res.sendFile(pathBuild.join(__dirname, "./dist", "index.html"));
 });
 
 // Start the server and listen for incoming requests

@@ -19,7 +19,7 @@ function CreatePost() {
     data.set('file', files[0]);
 
     const apiPortLink = import.meta.env.VITE_APP_PORT_LINK;
-    const apiStatic = import.meta.env.REACT_APP_STATIC || "/api";
+    const apiStatic = 'https://zealous-tree-01c94ac1e.4.azurestaticapps.net';
 
     const response = await fetch (`${apiStatic}/post`, {
       method: 'POST',

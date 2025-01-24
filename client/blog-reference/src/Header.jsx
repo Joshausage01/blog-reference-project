@@ -5,7 +5,7 @@ import { UserContext } from "./UserContext";
 function Header() {
   const {setUserInfo, userInfo} = useContext(UserContext);
   const apiPortLink = import.meta.env.VITE_APP_PORT_LINK;
-  const apiStatic = import.meta.env.REACT_APP_STATIC;
+  const apiStatic = import.meta.env.REACT_APP_STATIC || "/api";
 
   useEffect(() => {
     fetch(`${apiStatic}/profile`, {

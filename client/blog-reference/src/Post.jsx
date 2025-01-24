@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'; // Link from react-router-dom package
 
 function Post({_id, title, summary, content, cover, createdAt, author}){
   const apiPortLink = import.meta.env.VITE_APP_PORT_LINK;
-  const apiStatic = import.meta.env.REACT_APP_STATIC;
+  const apiStatic = import.meta.env.REACT_APP_STATIC || "/api";
 
   return(
     <div className="post">

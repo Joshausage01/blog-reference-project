@@ -5,7 +5,7 @@ import confusedFace from '../assets/face-confused.svg';
 function HomePage(){
   const [posts, setPosts] = useState([]);
   const apiPortLink = import.meta.env.VITE_APP_PORT_LINK;
-  const apiStatic = import.meta.env.REACT_APP_STATIC;
+  const apiStatic = import.meta.env.REACT_APP_STATIC || "/api";
 
   // This will run when the component is mounted, and every time the component is updated
   useEffect(() => { 

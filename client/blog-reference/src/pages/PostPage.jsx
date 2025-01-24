@@ -8,7 +8,7 @@ function PostPage() {
   const {userInfo} = useContext(UserContext);   // Access the user information from the UserContext
   const {id} = useParams();   // Get the post ID from the URL parameters
   const apiPortLink = import.meta.env.VITE_APP_PORT_LINK;
-  const apiStatic = import.meta.env.REACT_APP_STATIC;
+  const apiStatic = import.meta.env.REACT_APP_STATIC || "/api";
 
   // Get the post ID from the URL parameters
   useEffect(() => {

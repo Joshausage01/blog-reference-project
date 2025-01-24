@@ -4,7 +4,7 @@ function RegisterPage(){
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const apiPortLink = import.meta.env.VITE_APP_PORT_LINK;
-  const apiStatic = import.meta.env.REACT_APP_STATIC;
+  const apiStatic = import.meta.env.REACT_APP_STATIC || "/api";
 
   async function register(ev){
     ev.preventDefault();

@@ -93,7 +93,6 @@ app.post('/login', async (req, res) => {
   }
 });
 
-
 // Route handler: Defines the endpoint for logging out.
 app.post('/logout', (req, res) => {
   res.clearCookie('token');   // Cookie management: Clears the JWT cookie to log out the user.

@@ -4,10 +4,11 @@ function RegisterPage(){
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const apiPortLink = import.meta.env.VITE_APP_PORT_LINK;
+  const apiStatic = import.meta.env.REACT_APP_STATIC;
 
   async function register(ev){
     ev.preventDefault();
-    const response = await fetch(`${apiPortLink}/register`, {
+    const response = await fetch(`${apiStatic}/register`, {
       method: 'POST',
       body: JSON.stringify({username, password}),
       headers: {'Content-type':'application/json'},

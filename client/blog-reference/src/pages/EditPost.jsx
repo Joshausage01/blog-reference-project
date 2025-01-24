@@ -10,10 +10,11 @@ function EditPost() {
   const [files, setFiles] = useState('');
   const [redirect, setRedirect] = useState(false);
   const apiPortLink = import.meta.env.VITE_APP_PORT_LINK;
+  const apiStatic = import.meta.env.REACT_APP_STATIC;
   
   // Fetch post data from API
   useEffect(() => {
-    fetch(`${apiPortLink}/post/` + id)
+    fetch(`${apiStatic}/post/` + id)
       .then(response => {
         response.json().then(postInfo => {
           setTitle(postInfo.title);
@@ -38,7 +39,7 @@ function EditPost() {
     }
 
     // Send the form data to the server
-    const response = await fetch(`${apiPortLink}/post`, {
+    const response = await fetch(`${apiStatic}/post`, {
       method: 'PUT',
       body: data,
       credentials: 'include',

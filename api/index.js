@@ -20,8 +20,9 @@ const mongoUri = process.env.MONGO_URI;
 const port = process.env.PORT || 4000;
 const corsOrigin = process.env.CORS_ORIGIN;
 const corsDefaultDomain = process.env.DEFAULT_DOMAIN;
+const corsStaticWeb = process.env.STATIC_WEB_APP;
 
-app.use(cors({ credentials: true, origin: corsOrigin|| '*' })); // Middleware: Configures CORS to allow credentials and specific origin.
+app.use(cors({ credentials: true, origin: corsOrigin|| corsStaticWeb })); // Middleware: Configures CORS to allow credentials and specific origin.
 app.use(express.json());  // Middleware: Parses incoming JSON request bodies.
 app.use(cookieParser());  // Middleware: Parses cookies for incoming requests.
 app.use('/uploads', express.static(__dirname + '/uploads'));  // Static files: Serves uploaded files as static resources. Endpoint that access the images used.

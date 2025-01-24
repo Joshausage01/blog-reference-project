@@ -19,7 +19,9 @@ function CreatePost() {
     data.set('file', files[0]);
 
     const apiPortLink = import.meta.env.VITE_APP_PORT_LINK;
-    const response = await fetch (`${apiPortLink}/post`, {
+    const apiStatic = import.meta.env.REACT_APP_STATIC;
+
+    const response = await fetch (`${apiStatic}/post`, {
       method: 'POST',
       body: data,
       credentials: 'include',

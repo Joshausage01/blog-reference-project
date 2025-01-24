@@ -8,10 +8,11 @@ function LoginPage(){
   const [redirect, setRedirect] = useState(false);
   const {setUserInfo} = useContext(UserContext);
   const apiPortLink = import.meta.env.VITE_APP_PORT_LINK;
+  const apiStatic = import.meta.env.REACT_APP_STATIC;
 
   async function login(ev) {
     ev.preventDefault();
-    const response = await fetch(`${apiPortLink}/login`, {
+    const response = await fetch(`${apiStatic}/login`, {
       method: 'POST',
       body: JSON.stringify({username, password}),  // <--- pass the data as JSON and in string.
       headers: {'Content-Type': 'application/json'},  // <--- specify the content type as JSON

@@ -3,12 +3,13 @@ import { Link } from 'react-router-dom'; // Link from react-router-dom package
 
 function Post({_id, title, summary, content, cover, createdAt, author}){
   const apiPortLink = import.meta.env.VITE_APP_PORT_LINK;
+  const apiStatic = import.meta.env.REACT_APP_STATIC;
 
   return(
     <div className="post">
       <div className="image">
         <Link to={`/post/${_id}`}>  {/* Link the cover image to post page */}
-          <img src={`${apiPortLink}/`+cover} alt="place-holder" />
+          <img src={`${apiStatic}/`+cover} alt="place-holder" />
         </Link>
       </div>
       <div className="texts">

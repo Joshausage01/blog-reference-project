@@ -5,9 +5,10 @@ import { UserContext } from "./UserContext";
 function Header() {
   const {setUserInfo, userInfo} = useContext(UserContext);
   const apiPortLink = import.meta.env.VITE_APP_PORT_LINK;
+  const apiStatic = import.meta.env.REACT_APP_STATIC;
 
   useEffect(() => {
-    fetch(`${apiPortLink}/profile`, {
+    fetch(`${apiStatic}/profile`, {
       credentials: 'include',
     }).then(response => {
       response.json().then(userInfo => {
@@ -17,7 +18,7 @@ function Header() {
   }, []);
 
   function logout() {
-    fetch(`${apiPortLink}/logout`, {
+    fetch(`${apiStatic}/logout`, {
       credentials: 'include',
       method: 'POST', 
     });

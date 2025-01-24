@@ -117,27 +117,54 @@ app.get('/profile', (req, res) => {
 });
 
 // Route handler: Handles blog post creation with file uploads. For posting content.
-app.post('/post', uploadMiddleware.single('file'), async (req, res) => {
-  // To rename the filename to the original name
-  const {originalname, path} = req.file;
-  const parts = originalname.split('.');
-  const ext = parts[parts.length - 1];  // File extension extraction: Extracts the file extension.
-  const newPath = path+'.'+ext;
-  fs.renameSync(path, newPath);  // File operation: Renames the uploaded file.
+aapp.post('/post', uploadMiddleware.single('file'), async (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ error: 'File not uploaded' });
+  }
 
-  // This gets the data/infos necessary from create posts (to be used in post.jsx)
-  const {token} = req.cookies;
+  const { originalname, path } = req.file;
+  const parts = originalname.split('.');
+  const ext = parts[parts.length - 1]; // Extract file extension
+  const uploadDir = './uploads'; // Define uploads directory
+
+  if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir);
+  }
+
+  const newPath = `${uploadDir}/${path.split('/').pop()}.${ext}`;
+  try {
+    await fs.promises.rename(path, newPath); // Rename file
+  } catch (error) {
+    return res.status(500).json({ error: 'Error renaming file', details: error.message });
+  }
+
+  const { token } = req.cookies;
+  if (!token) {
+    return res.status(401).json({ error: 'Authorization token missing' });
+  }
+
   jwt.verify(token, secret, {}, async (err, info) => {
-    if (err) throw err;
-    const {title, summary, content} = req.body;
-    const postDoc = await Post.create({
-      title,    
-      summary,
-      content,
-      cover: newPath,  // File path: Stores the path of the uploaded file.
-      author: info.id,
-    });
-    res.json(postDoc);  // Response: Sends the created post as JSON.
+    if (err) {
+      return res.status(401).json({ error: 'Invalid or expired token' });
+    }
+
+    const { title, summary, content } = req.body;
+    if (!title || !summary || !content) {
+      return res.status(400).json({ error: 'Title, summary, and content are required' });
+    }
+
+    try {
+      const postDoc = await Post.create({
+        title,
+        summary,
+        content,
+        cover: newPath,
+        author: info.id,
+      });
+      res.json(postDoc);
+    } catch (error) {
+      res.status(500).json({ error: 'Error creating post', details: error.message });
+    }
   });
 });
 

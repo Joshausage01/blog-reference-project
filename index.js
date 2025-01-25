@@ -3,8 +3,8 @@ require("dotenv").config();
 const express = require('express');  // Module import: Importing the Express framework for building web applications.
 const cors = require('cors');  // Module import: Importing the CORS (Cross-Origin Resource Sharing) middleware for handling cross-origin, allows cross-origin requests to the server.
 const mongoose = require("mongoose");  // ODM (Object Data Modeling): For working with MongoDB in a structured way.
-const User = require('./models/User');  // Importing the User model for database operations.
-const Post = require('./models/Post');  // Importing the Post model for handling blog posts.
+const User = require('./api/models/User');  // Importing the User model for database operations.
+const Post = require('./api/models/Post');  // Importing the Post model for handling blog posts.
 const bcrypt = require('bcryptjs');     // Module import: Importing the bcrypt library for password hashing and verification, for hashing passwords to ensure secure storage.
 const app = express();                  // Application instance: Initializing an Express application.
 const jwt = require('jsonwebtoken');  // Authentication: For generating and verifying JSON Web Tokens.

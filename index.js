@@ -230,7 +230,7 @@ app.use(express.static(pathBuild.join(__dirname, "dist")));
 
 // Catch-all route to serve React's index.html for any unmatched routes
 app.get("/*", (req, res) => {
-  res.sendFile(pathBuild.join(__dirname, "./dist", "index.html"));
+  res.sendFile(pathBuild.join(__dirname, "./api/dist", "index.html"));
 });
 
 // Start the server and listen for incoming requests

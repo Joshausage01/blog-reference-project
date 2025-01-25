@@ -184,6 +184,7 @@ app.delete('/post/:id', async (req, res) => {
   if (!token) {
     return res.status(401).json({ error: 'No token provided' });   // Respond with an error if no token is provided
   }
+  
 
   // Verify the token to confirm user identity
   jwt.verify(token, secret, {}, async (err, info) => {

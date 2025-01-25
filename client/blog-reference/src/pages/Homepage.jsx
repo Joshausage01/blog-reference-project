@@ -9,7 +9,7 @@ function HomePage(){
 
   // This will run when the component is mounted, and every time the component is updated
   useEffect(() => { 
-    fetch(`${apiStatic}/post`).then(response => {
+    fetch(`${apiPortLink}/post`).then(response => {
       response.json().then(posts => {
         setPosts(posts); // Update state with posts
       });

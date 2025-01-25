@@ -12,7 +12,7 @@ function LoginPage(){
 
   async function login(ev) {
     ev.preventDefault();
-    const response = await fetch(`${apiStatic}/login`, {
+    const response = await fetch(`${apiPortLink}/login`, {
       method: 'POST',
       body: JSON.stringify({username, password}),  // <--- pass the data as JSON and in string.
       headers: {'Content-Type': 'application/json'},  // <--- specify the content type as JSON

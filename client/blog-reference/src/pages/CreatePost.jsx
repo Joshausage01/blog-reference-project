@@ -21,7 +21,7 @@ function CreatePost() {
     const apiPortLink = import.meta.env.VITE_APP_PORT_LINK;
     const apiStatic = 'https://zealous-tree-01c94ac1e.4.azurestaticapps.net';
 
-    const response = await fetch (`${apiStatic}/post`, {
+    const response = await fetch (`${apiPortLink}/post`, {
       method: 'POST',
       body: data,
       credentials: 'include',

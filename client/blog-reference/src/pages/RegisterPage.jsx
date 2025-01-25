@@ -8,7 +8,7 @@ function RegisterPage(){
 
   async function register(ev){
     ev.preventDefault();
-    const response = await fetch(`${apiStatic}/register`, {
+    const response = await fetch(`${apiPortLink}/register`, {
       method: 'POST',
       body: JSON.stringify({username, password}),
       headers: {'Content-type':'application/json'},

@@ -4,11 +4,11 @@ import { UserContext } from "./UserContext";
 
 function Header() {
   const {setUserInfo, userInfo} = useContext(UserContext);
-  const apiPortLink = import.meta.env.VITE_APP_PORT_LINK;
+  const apiPortLink = import.meta.env.VITE_APP_PORT_LINK ;
   const apiStatic = 'https://zealous-tree-01c94ac1e.4.azurestaticapps.net';
 
   useEffect(() => {
-    fetch(`${apiStatic}/profile`, {
+    fetch(`${apiPortLink}/profile`, {
       credentials: 'include',
     }).then(response => {
       response.json().then(userInfo => {
@@ -18,7 +18,7 @@ function Header() {
   }, []);
 
   function logout() {
-    fetch(`${apiStatic}/logout`, {
+    fetch(`${apiPortLink}/logout`, {
       credentials: 'include',
       method: 'POST', 
     });

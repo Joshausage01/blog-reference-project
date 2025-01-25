@@ -12,7 +12,7 @@ function PostPage() {
 
   // Get the post ID from the URL parameters
   useEffect(() => {
-    fetch(`${apiStatic}/post/${id}`)
+    fetch(`${apiPortLink}/post/${id}`)
     .then(response => {
       response.json().then(postInfo => {
         setPostInfo(postInfo);  // Store the retrieved post data in state
@@ -29,7 +29,7 @@ function PostPage() {
     const confirmDelete = window.confirm("Are you sure to you want to delete this post?");
     if (confirmDelete) {
       try {
-        const response = await fetch(`${apiStatic}/post/${postId}`, {
+        const response = await fetch(`${apiPortLink}/post/${postId}`, {
           method: 'DELETE',  // HTTP DELETE request
           credentials: 'include', // Include cookies for authentication
         });
@@ -71,7 +71,7 @@ function PostPage() {
         </div>
       )}
       <div className="image">
-        <img src={`${apiStatic}/${postInfo.cover}`} alt="" /> 
+        <img src={`${apiPortLink}/${postInfo.cover}`} alt="" /> 
       </div>
      <div className="content" 
       dangerouslySetInnerHTML={{__html: postInfo.content}}/> {/* Prints HTML from a string */}

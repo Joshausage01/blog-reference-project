@@ -13,7 +13,7 @@ function EditPost() {
   const apiStatic = 'https://zealous-tree-01c94ac1e.4.azurestaticapps.net';
 
   useEffect(() => {
-    fetch(`${apiStatic}/post/` + id)
+    fetch(`${apiPortLink}/post/` + id)
       .then(response => {
         response.json().then(postInfo => {
           setTitle(postInfo.title);
@@ -38,7 +38,7 @@ function EditPost() {
     }
 
     // Send the form data to the server
-    const response = await fetch(`${apiStatic}/post`, {
+    const response = await fetch(`${apiPortLink}/post`, {
       method: 'PUT',
       body: data,
       credentials: 'include',

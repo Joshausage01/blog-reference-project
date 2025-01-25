@@ -234,7 +234,7 @@ app.get("/*", (req, res) => {
 });
 
 // Start the server and listen for incoming requests
-app.listen(port, () => {
+app.listen(port || 4000, () => {
   console.log(`Server is running on http://localhost:${port}`);
   console.log('Run successful...')
 });
